@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入vue的包 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+	<!-- 将来new的Vue的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM中的V -->
+	<div id="app">
+		<p>
+			{{ msg }}
+		</p>
+	</div>
+
+	<script type="text/javascript">
+
+		//2.创建一个vue的实例
+		//当我们导入包之后，在浏览器的内存中，就多了一个vue的构造好事
+
+		//注意：我们new出来的这个vm对象，就是我们nvvm中的vm调度者
+		var vm =new Vue({
+				el:'#app', //表示，当前我们new的这个vue实例要控制哪个区域
+
+				//这里的data 就是mvvm中的M，钻木用来保存每个页面的数据
+				data:{
+					msg:'欢迎学习Vue' //可以通过vue提供的指令，很方便的就能把数据渲染到页面上面，程序员不在手动操作DOM元素了【前端vue之类的框架，不提倡我们去手动操作DOM元素】
+				}
+			}
+			)
+	</script>
+</body>
+</html>

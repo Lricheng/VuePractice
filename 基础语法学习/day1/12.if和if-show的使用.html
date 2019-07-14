@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+	<div id="app">
+		<input type="button" name="" @click="flag=!flag" value="切换flag">
+		<!-- 通过f12可以发现区别 -->
+		<!-- v-if的特点：每次都会重新删除或则船舰元素 -->
+		<!-- v-show的特点:每次不会重新进行Dom的删除和操作，只是切换了元素display：none的样式 -->
+
+		<!-- 所以 v--if 有较高的切换性能消耗  如果元素涉及到频繁的切换最好不要使用v-if-->
+		<!-- 所以v-show 有较高的初始渲染消耗  所以如果一个元素被创建出来不被被选到就不要使用v-sow 因为别人看不见但是他还是被渲染了，减少初始消耗-->
+		<h3 v-if="flag">这是v-if控制的元素</h3>
+		<h3 v-show="flag">这个是v-show控制元素</h3>
+	</div>
+ <script type="text/javascript">
+ 	var vm=new Vue({
+ 		el:'#app',
+ 		data:{
+ 			flag:false
+ 		},
+ 		methods:{
+ 			
+ 		}
+ 	});
+ </script>
+</body>
+</html>

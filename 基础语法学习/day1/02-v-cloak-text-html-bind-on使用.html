@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入vue的包 -->
+	<style type="text/css">
+		[v-cloak]{/*css中的属性选择器*/
+			display: none;
+		}
+
+	</style>
+</head>
+<body>
+	<!-- 将来new的Vue的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM中的V -->
+	<div id="app" >
+		<!-- 使用v-cloak 能够解决插值表达式闪烁的问题且需要通过css添加display：none  优点是可以与元素中原本的内容进行拼接-->
+		<p v-cloak> 
+			今天是2019-7-9：{{ msg }}
+		</p>
+		<!-- v-text 两个都是渲染 默认v-text 是没有闪烁问题的 但是标签内的内容会被完全替换 -->
+		<h4 v-text="msg">实打实大苏打</h4>
+
+		<!-- msg2直接当字符串输出 即当作普通文本-->
+		<div>{{msg2}}</div>
+		<div v-text="msg2"></div>
+		<div v-html="msg2"></div>
+		<!-- =============================== -->
+		<!-- -v-bind使用 -->
+		<!-- v-bind：是vue中提供用于绑定属性的指令 --><!-- 且还可以加上字符串 -->
+		<input type="button" value="bind" v-bind:title="mytitle +'234'">
+		<!-- 简写 -->
+		<input type="button" value="bind" :title="mytitle +'234'">
+
+		<!-- v-on : 事件绑定事件-->
+		<input type="button" value="v-on" :title="mytitle +'234'" v-on:click="show">
+
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script type="text/javascript">
+
+		//2.创建一个vue的实例
+		//当我们导入包之后，在浏览器的内存中，就多了一个vue的构造好事
+
+		//注意：我们new出来的这个vm对象，就是我们nvvm中的vm调度者
+		var vm =new Vue({
+				el:'#app', //表示，当前我们new的这个vue实例要控制哪个区域
+
+				//这里的data 就是mvvm中的M，钻木用来保存每个页面的数据
+				data:{
+						msg:'欢迎学习Vue',//可以通过vue提供的指令，很方便的就能把数据渲染到页面上面，程序员不在手动操作DOM元素了【前端vue之类的框架，不提倡我们去手动操作DOM元素】
+						msg2:'<h1>我是一个和h1的王爷标签使用v-html会被正确渲染成网页标签</h1>',
+						mytitle:'这是一个自己定义的title'
+					},
+				methods:{//这个methods属性中定义当前vue实例中可以哦那个的方法
+					show:function(){
+						alert('hello');
+					}
+				}
+				}
+			)
+	</script>
+</body>
+</html>
+<!-- 1.如何定义vue的基本代码结构 -->
+<!-- 2.插值表达式和v-text -->
+<!-- 3.v-cloak 解决闪烁问题 -->
+<!-- 4 v-html -->
+<!-- 5 v-bind属性进行属性绑定 缩写: -->
+<!-- 6 v-on vue提供的事件绑定机制 缩写@ -->

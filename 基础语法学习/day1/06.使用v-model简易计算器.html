@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<title></title>
+</head>
+<body>
+	<div id="app">
+		<input type="text" v-model="n1">
+
+		<select v-model="opt">
+			<option value="+">+</option>
+			<option value="-">-<option>
+			<option value="*">*</option>
+			<option value="/">/</option>
+		</select>
+		<input type="text" v-model="n2">
+		<input type="button" value="=" @click="calc">
+		<input type="text" v-model="result">
+	</div>
+
+
+	<script type="text/javascript">
+	
+		var vm =new Vue({
+			el:'#app',
+			data:{
+				n1:0,
+				n2:0,
+				result:0,
+				opt:'+'
+			},
+			methods:{
+				calc(){
+					//计算器算数的方法
+					// switch(this.opt){
+					// 	case '+':
+					// 		this.result=parseInt(this.n1)+parseInt(this.n2) 
+					// 		break;
+					// 	case '-': 
+					// 		this.result=parseInt(this.n1)-parseInt(this.n2) 
+					// 		break;
+					// 	case '*': 
+					// 		this.result=parseInt(this.n1)*parseInt(this.n2) 
+					// 		break;
+					// 	case '/': 
+					// 		this.result=parseInt(this.n1)/parseInt(this.n2) 
+					// 		break;
+					// }
+
+					//方法二--通过eval()方法可以解析字符串并执行
+					var codeStr='parseInt(this.n1)'+this.opt+'parseInt(this.n2)'
+					console.log(codeStr)
+					this.result=eval(codeStr)
+				}
+			}
+		});
+	</script>
+</body>
+</html>

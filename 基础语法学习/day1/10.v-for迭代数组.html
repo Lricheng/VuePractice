@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+	<div id="app">
+
+		<!-- in的后面我们放过普通数组 对象 对象数组 还有数字 count是从1开始 -->
+		<p v-for="count in 10">这次是第{{count}}次循环</p>
+	</div>
+ <script type="text/javascript">
+ 	var vm=new Vue({
+ 		el:'#app',
+ 		data:{
+ 			list:[
+ 				{id:1,name:'zs'}, 
+ 				{id:2,name:'zs2'},
+ 				{id:3,name:'z3'},
+ 				{id:4,name:'zs4'},
+ 				{id:5,name:'zs5'},
+ 			],
+ 			user:{
+ 				id:1,
+ 				name:'姚明',
+ 				gender:'男'
+ 			}
+
+ 		},
+ 		methods:{}
+ 	});
+ </script>
+</body>
+</html>

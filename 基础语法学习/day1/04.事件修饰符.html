@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入vue的包 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<style type="text/css">
+		.inner{
+			height: 150px;
+			background-color: darkcyan;
+		}
+		.outer{
+			padding: 40px ;
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<!-- 将来new的Vue的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM中的V -->
+	<div id="app">
+		
+		<div class="inner" @click="divClick">
+
+			<!-- 使用.stop 阻止冒泡 -->
+			<input type="button" name="" value="戳他" @click.stop="btnClick">
+			<!-- 点击input后 div的点击事件也会被触发 这就是冒泡 -->
+			<!-- 使用事件修饰符可以阻止冒泡 .stop-->
+
+
+			<!-- .prevent 阻止默认行为 -->
+			<a href="http://www.baidu.com" @click.prevent="linkClick">有问题去百度</a>
+
+		</div>
+
+
+			<!-- 捕获机制与冒泡相反，即先触发div 在触发里面 -->
+			<!-- 通过.capture -->
+		<div class="inner" @click.capture="divClick">
+
+			<input type="button" name="" value="戳他" @click="btnClick">
+			<!-- 捕获机制与冒泡相反，即先触发div 在触发里面 -->
+		</div>
+
+			<!-- .self只有点击当前元素的时候 -->
+
+		<div class="inner" @click.self="divClick">
+
+			<input type="button" name="" value="戳他" @click="btnClick">
+		</div>
+
+			<!-- .once 只触发一次 -->
+		<div class="inner" @click.once="divClick">
+			<!-- 切时事件修饰符是可以一起作用 -->
+			<a href="http://www.baidu.com" @click.prevent.once="linkClick">有问题去百度</a>
+		</div>
+
+
+		<!-- 演示：.stop 与.self 的区别 -->
+		<div class="outer" @click="div2Click">
+			<!-- .self 只是阻止了自己加入冒泡 点击后触发自身和div2 -->
+			<div class="inner" @click.self="divClick">
+
+				<!-- 使用.stop 阻止冒泡 -->
+				<!-- 点击后触发了自身和div2 的事件 而使用.self修饰的没有触发 -->
+				<input type="button" name="" value="戳他" @click="btnClick">
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+		//2.创建一个vue的实例
+		//当我们导入包之后，在浏览器的内存中，就多了一个vue的构造好事
+
+
+		//注意：我们new出来的这个vm对象，就是我们nvvm中的vm调度者
+		var vm =new Vue({
+				el:'#app', 
+				data:{},
+				methods:{
+					divClick(){
+						console.log('这是触发了 inner div的点击事件')
+					},
+					btnClick(){
+						console.log('这是触发了按钮的点击事件')
+					},
+					linkClick(){
+						console.log('这是触发了a的点击事件')
+					},
+					div2Click(){
+						console.log('这是触发了div2的点击事件')
+					}
+				}
+
+			}
+			);
+	</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入vue的包 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+	<!-- 将来new的Vue的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM中的V -->
+	<div id="app">
+		<input type="button" name="" value="浪起来" @click="lang">
+		<input type="button" name="" value="低调" @click="stop">
+		<h4>{{msg}}</h4>
+	</div>
+
+	<script type="text/javascript">
+
+		//2.创建一个vue的实例
+		//当我们导入包之后，在浏览器的内存中，就多了一个vue的构造好事
+
+		//注意：我们new出来的这个vm对象，就是我们nvvm中的vm调度者
+
+		//注意在vm实例中，如果想要获取data上的数据，或则想要调用methods中的方法，必须通过this.数据属性名 或者 this.方法名来获取
+		var vm =new Vue({
+				el:'#app', //表示，当前我们new的这个vue实例要控制哪个区域
+
+				//这里的data 就是mvvm中的M，钻木用来保存每个页面的数据
+				data:{
+					msg:'猥琐发育，别浪~~~！' ,
+					intervalId: null //在打他上定义定时器id
+				},
+				//分析：
+				//1，给浪起来的按钮绑定一个点击事件：v-on 或则@
+				//2，在按钮的事件处理函数中，写相关的业务逻辑代码：1拿到msg字符串，然后调用字符串的substring方法来进行字符串的截取操作，把第一个字符截取出来放到最后一个位置
+				//3，为实现殿下按钮，自动截取的功能，需要把2步骤中的代码放到一个定时器中
+				methods:{
+					//lang:function(){}//老写法
+					lang(){//es6写法
+
+						//this指向问题解决 ：先保存一份
+						var _this=this;
+						if (this.intervalId!=null) return;
+						this.intervalId=setInterval(/*function(){ //老式写法
+
+							//老式写法function中的this与外部不一样 所以要在外面重新打包一份
+							//获取到头的第一个字符
+							var start=_this.msg.substring(0,1)
+
+							//获取到后面的所有
+							var end=_this.msg.substring(1)
+							//重新拼接，并重新赋值
+							_this.msg=end+start
+
+						}*/
+						//es6写法
+						()=>{
+							//es6可以直接用this 指向一样 即箭头函数内部的this和外部的this保持一样
+							var start=this.msg.substring(0,1)
+							var end=this.msg.substring(1)
+							this.msg=end+start
+						}
+
+						,400)
+						//vm实例会监听自己身上data所以数据的改变，只要数据一发生变化，就会自动吧最新的数据同步
+					},
+					stop(){//停止定时器
+					clearInterval(this.intervalId)
+					this.intervalId=null;
+
+					}
+				}
+			}
+			)
+	</script>
+</body>
+</html>

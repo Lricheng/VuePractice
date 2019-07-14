@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+	<div id="app">
+		<p v-for="item in list">{{item}}</p>
+
+		<!-- 当我们可能会用到数组里面索引值时候 -->
+		<p v-for="(item,i) in list">索引值:{{i}}--{{item.id}}---{{item.name}}</p>
+
+
+		<!-- 便利对象中的属性，再遍历对象身上的键值对的时候，出了有val和key，在第三个位置其实还有一个索引 -->
+		<p v-for='(val,key,i) in user'> 键是：{{key}}---值是:{{val}}---索引{{i}}</p>
+	</div>
+ <script type="text/javascript">
+ 	var vm=new Vue({
+ 		el:'#app',
+ 		data:{
+ 			list:[
+ 				{id:1,name:'zs'}, 
+ 				{id:2,name:'zs2'},
+ 				{id:3,name:'z3'},
+ 				{id:4,name:'zs4'},
+ 				{id:5,name:'zs5'},
+ 			],
+ 			user:{
+ 				id:1,
+ 				name:'姚明',
+ 				gender:'男'
+ 			}
+
+ 		},
+ 		methods:{}
+ 	});
+ </script>
+</body>
+</html>
