@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入vue的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+</head>
+<body>
+	<!-- 将来new的Vue的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM中的V -->
+	<div id="app">
+		<input type="button" value="修改msg" name="" @click="msg='No'">
+		<h3 id="h3">{{msg}}</h3>
+	</div>
+
+	<script type="text/javascript">
+		var vm=new Vue({
+			el:'#app',
+			data:{
+				msg:'ok'
+			},
+			methods:{
+				show(){
+					console.log('执行了show方法')
+				}
+			},
+			beforeCreate(){
+					//这是遇到得第一个生命周期函数，表示实力完全被创造出来之前会执行
+					// this.show()
+					//在beforeCreate 生命周期函数执行得时候，data和methods中得数据并未被初始化，也就是说只是默认初始化了一个最原始得空Vue对象
+					
+				},
+			created(){
+				console.log(this.msg)
+				this.show()
+				//created中data与methods中得数据也都被初始化了
+			},
+			beforeMount(){
+				//这是遇到得第3个生命周期函数，表示 模板已经在内存中编辑完成，但是尚未把模板渲染到页面中
+
+				console.log(document.getElementById('h3').innerText)
+				//显示得是{{msg}}
+
+				//在beforemount执行得时候，页面中得元素并位真正得替换过来，只是之前写的一些模板字符串
+			},
+			mounted(){
+				//这是第4个生命周期函数，内存中得模板已经真实得挂载到了页面中，用户已经可以看到悬案好的页面了
+				console.log(document.getElementById('h3').innerText)
+				//同时mounted是vue实实例创建周期得最后一个生命周期函数
+
+				/*
+				如果要通过某些插件操作页面上得DOM节点了，最早要在mounted中进行
+				只要执行完了mounted，就表示整个Vue实力已经初始化完毕了
+				此时，插件已经脱了了创建阶段 进入了运行阶段
+				*/
+			},
+
+
+			//组件运行和销毁阶段得钩子函数
+			//运行中得两个事件
+			beforeUpdate(){
+				//表示data中改变更新，但是界面还没被更新是出发
+				console.log('界面上元素内容是'+document.getElementById('h3').innerText)
+				console.log('data中msg得内容是'+this.msg)
+			},
+			updated(){
+				//数据改变，且界面更新出发
+				console.log('界面上元素内容是'+document.getElementById('h3').innerText)
+				console.log('data中msg得内容是'+this.msg)
+			},
+
+			//销毁过程  
+			beforeDestroy(){
+				//当执行beforeDestroy 构造函数得时候，Vue实力就已经从运行阶段进入到销毁阶段
+				//当执行到beforeDestroy 实例圣上得data和所有得methods及过滤器，指令....都处于可用状态，吃屎还没有正则执行销毁得过程
+
+				console.log('beforeDestroy')
+			}
+			Destroyed(){
+				//当执行到Destroyed是 data methods 过滤器 指令 全都被销毁了
+				
+			}
+		})
+	</script>
+</body>
+</html>

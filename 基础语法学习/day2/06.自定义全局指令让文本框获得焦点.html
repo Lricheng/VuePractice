@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入vue的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+</head>
+<body>
+	<!-- 将来new的Vue的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM中的V -->
+	<div id="app">
+		<div>
+			<label v-fontsize="'20px'">
+				ID:
+				<input type="text" name="" v-model="id">
+			</label>
+			<label v-color>
+				Name:
+				<input type="text" name="" v-model="name" @keyup.f2="add"><!-- keyup 键盘按下事件 而.enter就是按键修饰符，所以可以自己定义按键修饰符 -->
+				
+			</label>
+				<!-- 在vue中 使用事件绑定机制，为元素指定函数的时候，如果加了小括号，就可以给函数传参数 -->
+				<input type="button" value="添加" name="" @click="add()">
+
+				<label>	
+						搜索名称关键字:
+						<input type="text" name="" v-model="keywords" v-focus v-color="'blue'" >
+				</label>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>name</th>
+					<th>ctime</th>
+					<th>operation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 数组是可以通过犯法的返回值 -->
+				<tr v-for="item in serach(keywords)" :key="item.id">
+					<td>{{item.id}}</td>
+
+					<td v-text="item.name"></td>
+
+					<td>{{item.ctime|dcFilter("")}}</td>
+
+					<td>
+						<a href="" @click.prevent="del(item.id)">删除</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<script type="text/javascript">
+
+		//自定义全局指令
+		/*注意：
+			在vue中所有指令中，再调用得时候，都以v-开头
+			directive:指令英文
+			Vue.directive()
+			:参数1：是指令得名称，在定义得时候，指令得名称前面不需要加v-
+			而在调用的时候，必须在指令得名称前加上v- 前缀进行调用
+			参数2：是一个对象，这个对象身上，有一些指令相关的函数，这些函数可以在特定的阶段，执行相关得操作
+
+		*/
+		Vue.directive('focus',{
+			bind:function(el){
+			//每当指令绑定到元素上得时候，辉立即执行这个bind函数，只会执行一次
+			//每个函数得第一个参数永远是el 指令所绑定的元素，可以用来直接操作 DOM
+
+			//在元素刚绑定指令得时候还没有插入到dom中，此时调用foucs没有作用
+				el.focus()
+
+				//一般与样式有关得可以在bind中执行
+			},
+			inserted:function(el){
+				//inserted 表示元素 插入DOM中的时候，会执行inserted函数，触发一次
+
+				el.focus()
+				//一般和js行为有关就在inserted中执行
+			},
+			updated:function(){
+				//当VNode更新得时候，会执行updated，可能会执行多次
+			}
+		})
+
+		//自定义函数：使用钩子函数得第二个参数binding拿到传递得值
+			Vue.directive('color',{
+				bind:function(el,binding){//binding名字可以改变，只要使用第二个位置得形参就有效果
+					//设置样式并不关系插不插入dom
+					el.style.color=binding.value
+				}
+			})
+
+
+
+		//自定义函数简写(只使用bind和update)
+		Vue.directive('fontsize',function(el,binding){
+			el.style.fontSize=parseInt(binding.value)+'px'
+		})
+		//自定义按键修饰符2.x
+		Vue.config.keyCodes.f2=113
+		
+
+
+
+		//定义全局过滤器
+
+		//如果pattern 不传值得话pattern就是underfine 所以可以给她设置个默认值(es6)
+		Vue.filter('dcFilter',function(dateStr,pattern=''){
+			//根据给帝国的时间字符串，得到特定的时间
+			var dt=new Date(dateStr)
+			//yyyy-mm--dd
+			var y=dt.getFullYear()
+			var m=dt.getMonth()
+			var d=dt.getDate()
+			// return y+'-'+m+'-'+d
+
+			if (pattern.toLowerCase()==='yyyy-mm-dd') {
+				//使用模板字符串 
+				return `${y}-${m}-${d}`
+			}else{
+				var hh=dt.getHours()
+				var mm=dt.getMinutes()
+				var ss=dt.getSeconds().toString().padStart(2,'0')
+				return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+			}
+
+
+		})
+
+
+
+		//2.创建一个vue的实例
+		//当我们导入包之后，在浏览器的内存中，就多了一个vue的构造好事
+
+		//注意：我们new出来的这个vm对象，就是我们nvvm中的vm调度者
+		var vm =new Vue({
+				el:'#app', //表示，当前我们new的这个vue实例要控制哪个区域
+
+				//这里的data 就是mvvm中的M，钻木用来保存每个页面的数据
+				data:{
+					keywords:'',
+					id:'',
+					name:'',
+					list:[
+					{id:1,name:'奔驰',ctime:new Date()},
+					{id:2,name:'宝马',ctime:new Date()},
+
+					]
+				},
+				methods:{
+					add(){
+						var car={id:this.id,name:this.name,ctime:new Date()}
+						this.list.push(car)
+						this.id=this.name=''
+					},
+					del(id){
+
+						//根据id删除数据
+						//如果拿到了id的索引，直接调用数组的splice方法
+
+
+	//方法一						//some方法 如果里面的表达式是正确就会继续执行
+						// this.list.some((item,i)=>{
+						// 	if (item.id==id) {
+						// 			this.list.splice(i,1)
+						// 			//在数组的some方法中，如果retrun true，就会立即终止这个数组的后续循环
+
+						// 			return true;
+						// 	}
+						// })
+
+	//方法二						//通过数组的finIndex的方法来查找索引 内部也需要传递一个回调函数 返回id对应的对象 然后找到索引,然后根据索引删除
+						var index= this.list.findIndex(item=>{
+							if (item.id==id) {
+								return true
+							}
+						})
+						console.log(index)	
+						this.list.splice(index,1)			
+					},
+					serach(keywords){
+						//方法一 使用数组得foreach 与list.indexof进行字符串得匹配
+
+						// var newList=[]
+						// this.list.forEach(item=>{
+						// 	if (item.name.indexOf(keywords) !=-1) {
+						// 		//如果找不到就等于-1
+						// 		newList.push(item)
+						// 	}
+						// })
+						// return newList
+
+						//方法二 数组过滤器形成新数组
+						//数组新方法
+						//注意：forEach some filter finIndex 这些都是属于数组得新方法
+						//这些都会对每一项进行遍历
+						var newList= this.list.filter(item=>{
+							// if (item.name.indexOf(keywords)=-1)方法1
+
+							//方法二 includes（es6中提供得）
+							//如果字符串包含得话就返回true
+							if (item.name.includes(keywords)) {
+								return item;
+							}
+						})
+
+						return newList
+
+					}
+
+				},
+				//自定义私有指令
+				directives:{
+					'fontWeight':{
+						bind:function(el,binding){
+							
+						}
+					}
+				}
+			}
+			)
+
+		/*定义过滤器*/
+		/*过滤器中得data就是|前面得管道中得数据，所以function中得第一个参数已经v被过滤死了
+		即data
+		*/
+
+	</script>
+</body>
+</html>
+
+<!-- 过滤器调用的格式{{name|nameope}} -->
