@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入 vue 的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+	<!-- 2. 自定义两组样式控制transition控制的元素实现动画 -->
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+	<style type="text/css">
+		
+		.ball{
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			background-color: red;
+		}
+	</style>
+
+</head>
+<body>
+	<div id="app">
+		<input type="button" value="快到碗里来"  @click="flag=!flag" name="">
+
+		<!-- 1使用transition包裹 -->
+			<!-- 使用动画的钩子函数就可以实现半场动画 -->
+		<transition
+			@before-enter="beforeEnter"
+			@enter="enter"
+			@after-enter="afterEnter"
+		>
+			<div class="ball" v-show="flag"></div>
+		</transition>
+	</div>
+
+	<script type="text/javascript">
+		var rm=new Vue({
+			el:'#app',
+			data:{
+				flag:false
+			},
+			methods:{
+
+				/*el：动画钩子函数的第一个参数，表示要执行动画的那个元素,是个原生的js DOM对象*/
+
+				beforeEnter(el){
+					//表示动画入场之前，此时动画还尚未开始，所以可以在beforeEnter中，设置原生动画开始之前的起始样式
+					//设置小球开始动画之前的起始位置
+					el.style.transform='translate(0px,0px)'//同时起了起始位置初始化的过程	
+
+
+				},
+				enter(el,done){
+					//这句话没有实际的作用，但是如果不写的话就出不来动画效果
+
+					el.offsetWidth
+					//enter 百事动画开始之后的样式，所以这里可以设置小球完成动画之后的结束状态
+					el.style.transform='translate(150px,450px)'
+					el.style.transition='all 1s ease'
+
+					//第二个参数done 其实就是afterEnter()，也就i是说它是一个函数的引用
+					done()
+				},
+				afterEnter(el){
+					console.log('afterEnter ok')
+					this.flag=!this.flag
+				}
+					
+			}
+		})
+	</script>
+</body>
+</html>

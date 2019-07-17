@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入vue的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+		 <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+<body>
+	<!-- 将来new的Vue的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM中的V -->
+	<div id="app">
+		<div>
+			<label>
+				ID:
+				<input type="text" name="" v-model="id">
+			</label>
+			<label>
+				Name:
+				<input type="text" name="" v-model="name">
+				
+			</label>
+				<!-- 在vue中 使用事件绑定机制，为元素指定函数的时候，如果加了小括号，就可以给函数传参数 -->
+				<input type="button" value="添加" name="" @click="add">
+
+				<label>	
+						搜索名称关键字:
+						<input type="text" name="" v-model="keywords">
+				</label>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>name</th>
+					<th>ctime</th>
+					<th>operation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 数组是可以通过方法的返回值 -->
+				<tr v-for="item in list" :key="item.id">
+					<td>{{item.id}}</td>
+
+					<td v-text="item.name"></td>
+
+					<td>{{item.ctime}}</td>
+
+					<td>
+						<a href="" @click.prevent="del(item.id)">删除</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<script type="text/javascript">
+		//其实可以通过vue-resource来全局配置数据接口的根域名
+
+		//且如果我们通过全局配置了全聚德接口，请求的数据接口 根域名，则，在每次单独发起http请求的时候，请求的url路径，应该以相对路劲开头，前面不能带/。否则就不会启用根域名做拼接
+		Vue.http.options.root='http://localhost:8080/VueSender'
+
+		//emulateJSON选项也可以在全局变量中启用
+		Vue.http.options.emulateJSON=true;
+
+		var vm =new Vue({
+
+				el:'#app', //表示，当前我们new的这个vue实例要控制哪个区域
+
+				//这里的data 就是mvvm中的M，钻木用来保存每个页面的数据
+				data:{
+					keywords:'',
+					id:'',
+					name:'',
+					list:[
+						
+					]
+				},
+				methods:{
+					add(){
+						/*
+							post 第一个参数 接口的url
+							第二个参数 要提交给服务器的数据
+							第三个参数：是一个配置对象，要以哪种表单数据类型提交过去，{emulateJSON:true},以普通表单的格式将数据提交给服务器
+						*/
+
+						this.$http.post('VueServlet',{'id':this.id,'name':this.name,"gn":'2'},{emulateJSON:true}).then(result=>{
+							if (result.status===200) {
+								this.list=result.data
+								console.log('成功')
+							}else{
+								alert('添加失败')
+							}
+						})
+					},
+					del(id){
+						this.$http.post('VueServlet',{'id':id,"gn":'3'},{emulateJSON:true}).then(result=>{
+							if (result.status===200) {
+								this.list=result.data
+								alert('删除成功')
+							}else{
+								alert('添加失败')
+							}
+						})
+					},
+					serach(keywords){
+					},
+					getAllList(){
+						this.$http.get('VueServlet?gn=1').then(result=>{
+							//注意：通过$http获取到的数据都是在result中回去的
+							
+							if (result.status===200) {
+
+								// this.list=JSON.parse(result.body.toString())
+								console.log(result.data)
+								this.list=result.data
+
+
+							}else{
+								alert('数据返回失败')
+							}
+						})
+					}
+				},
+				created(){
+					this.getAllList()
+				}
+			}
+			)
+	</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入 vue 的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+</head>
+<body>
+	<!-- 将来 new 的 Vue 的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM 中的 V -->
+	<div id="app">
+		<!-- 多个组件的话就会造成data中的数据串用，几个钟的数据都一起变了 -->
+		<counter></counter>
+		<counter></counter>
+		<counter></counter>
+		<counter></counter>
+	</div>
+
+
+	<template id="tmpl">
+		<div>
+			<input type="button" value="+1" @click="increment" name="">
+			<h3>{{count}}</h3>
+		</div>
+	</template>
+	<script type="text/javascript">
+
+		var dataObj={ count: 0 }
+
+		Vue.component('counter',{
+			template:'#tmpl',
+			data:function(){
+				return dataObj
+			},
+			methods:{
+				increment(){
+					this.count++
+				}
+			}
+		})
+
+		var rm=new Vue({
+			el:'#app',
+			data:{},
+			methods:{}
+			
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入 vue 的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+	<!-- 2. 自定义两组样式控制transition控制的元素实现动画 -->
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+	<style type="text/css">
+
+		/*v-ener[这是一个时间点的体现] ，是进入之前，元素的起始状态，此时还没有开始进入*/
+		/*v-leave-to[这是一个时间点的体现] ，是动画离开之后，元素离开的终止状态，此时元素的动画已经结束*/
+		.tran1-enter,.tran1-leave-to{
+			opacity: 0;
+			transform: translateX(80px);
+		}
+
+		/*v-enter-active [入场动画的时间段]*/
+		/*v-leave-active [入场动画的时间段]*/
+		.tran1-leave-active,.tran1-enter-active{
+			transition: all 0.4s ease;
+		}
+	</style>
+
+</head>
+<body>
+	<!-- 将来 new 的 Vue 的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM 中的 V -->
+	<div id="app">
+		<input type="button" value="toggle" name="" @click="flag=!flag">
+		<!-- 需求 点击按钮 让h3显示，再点消失 -->
+
+			<!-- 1. 使用transition元素，把需要被动画控制的元素包裹起来：transition元素是Vue官方提供的 -->
+		<transition name="tran1">
+			<h3 v-show="flag">你好我是h3</h3>
+		</transition>
+	</div>
+
+	<script type="text/javascript">
+		var rm=new Vue({
+			el:'#app',
+			data:{
+				flag:false
+			}
+		})
+	</script>
+</body>
+</html>

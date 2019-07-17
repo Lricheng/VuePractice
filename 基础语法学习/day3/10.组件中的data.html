@@ -1,0 +1,50 @@
+		<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入 vue 的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+</head>
+<body>
+	<!-- 将来 new 的 Vue 的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM 中的 V -->
+	<div id="app">
+		<my-com></my-com>
+	</div>
+	<template id="tmpl">
+		<h1>这个是一个全局函数模板tmp{{msg}}</h1>
+	</template>
+
+
+	<script type="text/javascript">
+		//1.组件可以有自己的data数据
+		//2 组件和实例的data有点不一样，实例中的data可以为一个对象，组件中的data必须是一个方法
+		//3 组件中的data除了必须为一个方法之外，这个方法内部必须返回一个对象才行
+		//全局组件
+
+
+		//4 组件中的data数据使用方式和实例中的data使用方式完全一样
+		Vue.component('my-com',{
+			template:'#tmpl',
+			data:function(){
+				return{
+					msg:'这个是组件中data定义的数据'
+				}
+			}
+
+		})
+
+
+		var rm=new Vue({
+			el:'#app',
+			data:{},
+			methods:{}
+		})
+	</script>
+</body>
+</html>
