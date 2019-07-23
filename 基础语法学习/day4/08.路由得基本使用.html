@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入 vue 的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+	<script src="../lib/vue-router.js"></script>
+
+
+	<!-- 设置路由选中高亮 -->
+	<style type="text/css">
+		/*.router-link-active{
+			color: red;
+			font-weight: 800;
+		}*/
+
+		.myactive{
+			color: red;
+			font-weight: 800;
+		}
+
+		.v-enter,.v-leave-to{
+			opacity: 0;
+			transform: translateX(140px);
+		}
+		.v-enter-active,.v-leave-active{
+			transition: all 0.4s ease;
+		}
+	</style>
+</head>
+<body>
+	<!-- 将来 new 的 Vue 的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM 中的 V -->
+	<div id="app">
+		<!-- 这是vue-router提供的元素，专门用来占位符的，将来，路由规则匹配到的组件，就会展示到这个router-view中去 -->
+		<!-- <a href="#/register">register</a>
+		<a href="#/login">login</a> -->
+
+
+		<!-- router-link  默认是被渲染成a标签 -->
+		<router-link to="/login" tag="span">登入</router-link>
+
+		<router-link to="/register">注册</router-link>
+
+		<transition mode="out-in">
+			<router-view>	
+			
+			</router-view>
+		</transition>
+		<!-- 
+			执行过程：
+				1.改变url地址
+				
+				2.路由会监听地址的改变path
+				3.切换到对应的组件
+
+		 -->
+
+	</div>
+
+	<script type="text/javascript">
+		
+		var login={
+				template:'<h1>登入组件</h1>'
+			}
+		var register={
+				template:'<h1>注册组件</h1>'
+			}
+
+
+
+
+		//创建一个路由对象，当导入vue-router报之后，在window全局对象中，就有了一个路由构造函数，叫做VueRouter
+
+		//在new路由对象得时候，可以为钩子函数传递一个配置对象
+
+
+
+
+		var routerObj=new VueRouter({
+		
+
+
+			// route //这个配置对象中得route，代表得是路由配置规则 的意思
+
+			routes:[//路由匹配对象
+			//每个路由规则，都是一个对象，这个对象的身上有两个必须的属性
+
+			//1：是path 表示舰艇那个路由链接地址
+			//2是component 表示路由是前面匹配的path 则表示component属性对应的那个组件
+
+			//注意：component的值必须是一个对象，不是对象名
+				{path:'/',redirect:'/login'},
+				//redirect 重定向，表示地址是#/的话直接重定向智#/login
+				{path:'/login',component:login},
+				{path:'/register',component:register},
+			],
+
+			linkExactActiveClass:'myactive'
+		})
+
+		var rm=new Vue({
+			el:'#app',
+			data:{},
+			methods:{},
+			router:routerObj //将路由规则对象注册到vm实例上，用来监听URL地址的变化，然后展示对应的组件
+			
+		})
+	</script>
+</body>
+</html>

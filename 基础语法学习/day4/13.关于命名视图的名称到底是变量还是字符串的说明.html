@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<!-- 1。导入 vue 的包 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="../lib/vue.js"></script>
+		<script src="../lib/vue-router.js"></script>
+</head>
+<body>
+	<!-- 将来 new 的 Vue 的实例，与控制这个元素中的所有内容 -->
+
+	<!-- Vue 实例所控制的这个元素区域，就是我们 MVVM 中的 V -->
+	<div id="app">
+		<!-- 属性如果不加冒号双引号里面永远都是一个冒号，不用多此一举加单引号 -->
+		<!-- 
+			例子
+				:name="'zzz'" 这样才要加
+				name="zzz"这样的话里面永远都是字符串
+
+		 -->
+		<router-view name="default"></router-view>
+		<router-view name="left"></router-view>
+		<router-view name="main"></router-view>
+	</div>
+
+	<script type="text/javascript">
+
+			var header={
+				template:'<h1>这是头部区域</h1>'
+			}
+
+			var leftBox={
+				template:'<h1>这是left侧边区域</h1>'
+			}
+
+			var mainBox={
+				template:'<h1>这是maxBox主体区域</h1>'
+			}
+
+			//创建路由对象
+			var routerObj=new VueRouter({
+				routes:[
+					{path:'/',components:{
+						'default':header,
+						'left':leftBox,
+						'main':mainBox
+					}},
+					
+				]
+			})
+			var rm=new Vue({
+				el:'#app',
+				data:{},
+				methods:{},
+				router:routerObj
+				
+			})
+	</script>
+</body>
+</html>
